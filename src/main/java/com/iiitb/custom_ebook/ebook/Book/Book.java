@@ -1,6 +1,7 @@
 package com.iiitb.custom_ebook.ebook.Book;
 import java.util.*;
 import com.iiitb.custom_ebook.ebook.Author.Author;
+import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
 
 import javax.persistence.*;
 
@@ -23,6 +24,11 @@ public class Book {
     private List<BookComponents> bookComponentsList;
 
     public Book() {
+    }
+
+    public Book(String book_name)
+    {
+        this.book_name=book_name;
     }
 
     public int getId() {
@@ -55,5 +61,15 @@ public class Book {
 
     public void setBookComponentsList(List<BookComponents> bookComponentsList) {
         this.bookComponentsList = bookComponentsList;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", book_name='" + book_name + '\'' +
+                ", author=" + author +
+                ", bookComponentsList=" + bookComponentsList +
+                '}';
     }
 }

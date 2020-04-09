@@ -1,4 +1,7 @@
-package com.iiitb.custom_ebook.ebook.Book;
+package com.iiitb.custom_ebook.ebook.Book.BookComponents;
+import com.iiitb.custom_ebook.ebook.Book.Book;
+import com.iiitb.custom_ebook.ebook.Book.Keywords.Keywords;
+
 import java.util.*;
 import javax.persistence.*;
 

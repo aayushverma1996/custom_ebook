@@ -22,6 +22,10 @@ public class Author {
     public Author() {
     }
 
+    public Author(String author_name)
+    {
+        this.author_name=author_name;
+    }
 
     public int getId() {
         return id;
@@ -38,4 +42,13 @@ public class Author {
     public void setAuthor_name(String author_name) {
         author_name = author_name;
     }
+
+//    @Override
+//    public String toString() {
+//        return "Author{" +
+//                "id=" + id +
+//                ", author_name='" + author_name + '\'' +
+//                ", books=" + books +
+//                '}';
+//    }
 }

@@ -1,4 +1,6 @@
-package com.iiitb.custom_ebook.ebook.Book;
+package com.iiitb.custom_ebook.ebook.Book.Keywords;
+import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
+
 import java.util.*;
 import javax.persistence.*;
 
@@ -41,5 +43,14 @@ public class Keywords {
 
     public void setBookComponentsList(List<BookComponents> bookComponentsList) {
         this.bookComponentsList = bookComponentsList;
+    }
+
+    @Override
+    public String toString() {
+        return "Keywords{" +
+                "id=" + id +
+                ", keyword='" + keyword + '\'' +
+                ", bookComponentsList=" + bookComponentsList +
+                '}';
     }
 }
