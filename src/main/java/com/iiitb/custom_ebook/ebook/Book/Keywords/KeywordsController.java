@@ -20,11 +20,7 @@ public class KeywordsController {
     @Autowired
     private KeywordsService keywordsService;
 
-    @PostMapping("/keywords")
-    public List<Keywords> createKeywords(@RequestBody List<String> keywords)
-    {
-            return keywordsService.saveKeywords(keywords);
-    }
+
     @GetMapping("/keywords/{keyword}")
     public Keywords getSpecificKeyword(@PathVariable String keyword)
     {

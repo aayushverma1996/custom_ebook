@@ -1,5 +1,7 @@
 package com.iiitb.custom_ebook.ebook.uploadFile;
 import com.iiitb.custom_ebook.ebook.Book.Book;
+import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
+import com.iiitb.custom_ebook.ebook.Book.Keywords.Keywords;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +33,17 @@ public class UploadController {
 
 
             String doc_path=uploadService.uploadNewFile(file);
+
            if(!doc_path.equals("failure")) {
                Book temp_book = uploadService.getBook(id);
 
-               uploadService.addNewBookComponents(temp_book, doc_path, topic);
+               List<Keywords> keywords_list=uploadService.addKeywords(keywords);
+
+               BookComponents response= uploadService.addNewBookComponents(temp_book, doc_path, topic,keywords_list);
+
+
                return "success";
+
            }
 
         return "failure";
