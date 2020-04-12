@@ -33,6 +33,9 @@ public class UploadService {
 
     //Save the uploaded file to this folder
     @Value("docs")
+    private String DOCS_FOLDER ;
+
+    @Value("uploaded")
     private String UPLOADED_FOLDER ;
     @Value("generated")
     private String GENERATED_FOLDER;
@@ -53,35 +56,70 @@ public class UploadService {
 
     }
 
-    public String uploadNewFile(MultipartFile file) {
+    public String uploadNewFile(MultipartFile file,Book book) {
 
-        String doc_path=UPLOADED_FOLDER;
-        try {
-            // Get the file and save it somewhere
 
-            File dir = new File(UPLOADED_FOLDER);
 
-            if (!dir.exists()) {
-                dir.mkdir();
+            String upload_book_path = DOCS_FOLDER;
+            try {
+                // Get the file and save it by creating docs/uploaded/bookname path
+                byte[] bytes = file.getBytes();
+
+                Path path = null;
+
+                String current_dir_path = Paths.get("").toAbsolutePath().toString();
+
+                upload_book_path = current_dir_path + File.separator
+                        + DOCS_FOLDER + File.separator
+                        + UPLOADED_FOLDER + File.separator
+                        + book.getBook_name() + File.separator;
+//
+                System.out.println("Upload Book Path String : " + upload_book_path);
+                File create_directory = new File(upload_book_path);
+                if (!create_directory.exists()) {
+                    if (create_directory.mkdirs()) {
+                        path = Paths.get(upload_book_path + file.getOriginalFilename());
+                        System.out.println("New Directory Created, File Created At Path :" + path);
+                        Files.write(path, bytes);
+                    } else {
+                        System.out.println("Failed to create directory!");
+                        System.out.println("So Must not write the file");
+                        return "failure";
+                    }
+                } else {
+                    path = Paths.get(upload_book_path + file.getOriginalFilename());
+                    System.out.println("Directory already existed, File Created At Path :" + path);
+                    Files.write(path, bytes);
+                }
+
+                //old code
+                // Get the file and save it somewhere
+
+//            File dir = new File(UPLOADED_FOLDER);
+//
+//            if (!dir.exists()) {
+//                dir.mkdir();
+//            }
+//
+//            byte[] bytes = file.getBytes();
+//            String dir_path = Paths.get("").toAbsolutePath().toString();
+//
+//
+//            doc_path = dir_path + File.separator + dir + File.separator + file.getOriginalFilename();
+//            Path path = Paths.get(doc_path);
+//
+//            System.out.println(doc_path);
+//            Files.write(path, bytes);
+
+            } catch (IOException e) {
+
+
+                e.printStackTrace();
+                return "failure";
             }
 
-            byte[] bytes = file.getBytes();
-            String dir_path = Paths.get("").toAbsolutePath().toString();
+            return upload_book_path+file.getOriginalFilename();
 
-
-            doc_path = dir_path + File.separator + dir + File.separator + file.getOriginalFilename();
-            Path path = Paths.get(doc_path);
-
-            System.out.println(doc_path);
-            Files.write(path, bytes);
-
-        } catch (IOException e) {
-
-
-            e.printStackTrace();
-            return "failure";
-        }
-        return doc_path;
     }
 
     public List<Keywords> addKeywords(String keywords)
@@ -100,7 +138,7 @@ public class UploadService {
     public String clubDocuments()
     {
         //to check if existing book is present
-       // List<BookComponents> bookComponents=bookComponentsService.getAllBookComponents();
+        List<BookComponents> bookComponents=bookComponentsService.getAllBookComponents();
         String dir_path = Paths.get("").toAbsolutePath().toString();
         String file_name=Integer.toString(bookComponents.get(0).getId());
         for(int i=1;i<bookComponents.size();i++)

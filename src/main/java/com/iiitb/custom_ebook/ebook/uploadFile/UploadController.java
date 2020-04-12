@@ -31,11 +31,11 @@ public class UploadController {
                                    @RequestParam("keywords") String keywords
     ) {
 
-
-            String doc_path=uploadService.uploadNewFile(file);
+            Book temp_book = uploadService.getBook(id);
+            String doc_path=uploadService.uploadNewFile(file,temp_book);
 
            if(!doc_path.equals("failure")) {
-               Book temp_book = uploadService.getBook(id);
+               //Book temp_book = uploadService.getBook(id);
 
                List<Keywords> keywords_list=uploadService.addKeywords(keywords);
 
