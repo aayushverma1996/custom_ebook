@@ -49,5 +49,11 @@ public class UploadController {
         return "failure";
     }
 
+    @GetMapping("/generate")
+    public String generateBook()
+    {
+        return uploadService.clubDocuments();
+    }
+
 }
 

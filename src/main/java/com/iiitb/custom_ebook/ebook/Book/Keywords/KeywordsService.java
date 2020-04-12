@@ -39,6 +39,7 @@ public class KeywordsService {
         List<Keywords>  response = (List<Keywords>) keywordsRepository.saveAll(keywords);
 
         final_response.addAll(response);
+
         return final_response;
 
     }
