@@ -1,5 +1,6 @@
 package com.iiitb.custom_ebook.ebook.Book.Keywords;
 
+import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,14 +10,6 @@ import java.util.*;
 public class KeywordsController {
 
 
-
-    // when frontend provides with list of keywords
-//    @PostMapping("/keywords")
-//    public String buildPdfKeywords(@RequestBody List<Keywords> keywords)
-//    {
-//        System.out.println(keywords.get(1));
-//        return "ok";
-//    }
     @Autowired
     private KeywordsService keywordsService;
 
@@ -32,5 +25,18 @@ public class KeywordsController {
     {
         return keywordsService.getAllKeywords();
     }
-    //update and delete need to be made
+
+
+    @GetMapping("/keywords/bookComp/{keyword}")
+    public List<BookComponents> get(@PathVariable String keyword)
+    {
+
+//        List<BookComponents> response= keywordsService.getAllBookComp_bySpecifiedKeyword(keyword);
+//        return response;
+
+        Keywords k=keywordsService.getSpecificKeyword(keyword);
+        return k.getBookComponentsList();
+
+    }
+
 }

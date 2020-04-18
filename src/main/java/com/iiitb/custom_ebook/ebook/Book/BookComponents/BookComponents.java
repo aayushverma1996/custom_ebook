@@ -1,13 +1,16 @@
 package com.iiitb.custom_ebook.ebook.Book.BookComponents;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iiitb.custom_ebook.ebook.Book.Book;
 import com.iiitb.custom_ebook.ebook.Book.Keywords.Keywords;
 
+import java.io.Serializable;
 import java.util.*;
 import javax.persistence.*;
 
 @Entity
 @Table(name="book_Components")
-public class BookComponents {
+
+public class BookComponents implements Serializable{
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
@@ -19,11 +22,13 @@ public class BookComponents {
     @Column(nullable = false)
     private String location;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="book_id")
     private Book book;
 
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(name="component_keyword",joinColumns = {@JoinColumn(name="book_id")},inverseJoinColumns = {@JoinColumn(name="keyword_id")})
     private List<Keywords> keywordsList;
 

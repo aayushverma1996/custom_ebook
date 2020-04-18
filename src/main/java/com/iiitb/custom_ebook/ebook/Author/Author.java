@@ -1,5 +1,8 @@
 package com.iiitb.custom_ebook.ebook.Author;
 
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iiitb.custom_ebook.ebook.Book.Book;
 import java.util.*;
 import javax.persistence.*;
@@ -16,6 +19,7 @@ public class Author {
     @Column(nullable = false,length = 100,unique = true)
     private String author_name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author",fetch = FetchType.LAZY)
     private List<Book>books;
 
@@ -43,12 +47,13 @@ public class Author {
         author_name = author_name;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Author{" +
-//                "id=" + id +
-//                ", author_name='" + author_name + '\'' +
-//                ", books=" + books +
-//                '}';
-//    }
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+
 }

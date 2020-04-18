@@ -1,12 +1,7 @@
 package com.iiitb.custom_ebook.ebook.Book.Keywords;
 
-import com.iiitb.custom_ebook.ebook.Book.Keywords.Keywords;
-import com.iiitb.custom_ebook.ebook.Book.Keywords.KeywordsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 @Service
@@ -27,17 +22,14 @@ public class KeywordsService {
                {
                    final_response.add(result.get());
                }
-        else {
+         else {
                Keywords temp_keyword = new Keywords();
                temp_keyword.setKeyword(keywordsbyname[i].toLowerCase());
                keywords.add(temp_keyword);
            }
        }
         //add here method to map list of keywords to book
-
-
         List<Keywords>  response = (List<Keywords>) keywordsRepository.saveAll(keywords);
-
         final_response.addAll(response);
 
         return final_response;
@@ -60,4 +52,10 @@ public class KeywordsService {
             }
             return response;
         }
+
+        //mapping function to get book components from keywords
+//       public List<BookComponents> getAllBookComp_bySpecifiedKeyword(String key)
+//        {
+//            return keywordsRepository.getBookByKeyword(key);
+//        }
 }

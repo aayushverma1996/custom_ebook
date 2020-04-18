@@ -1,5 +1,8 @@
 package com.iiitb.custom_ebook.ebook.Book;
 import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.iiitb.custom_ebook.ebook.Author.Author;
 import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
 
@@ -16,10 +19,11 @@ public class Book {
     @Column(length=50,unique = true,nullable = false)
     private String book_name;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="author_id")
     private Author author;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "book",fetch = FetchType.LAZY)
     private List<BookComponents> bookComponentsList;
 
@@ -63,13 +67,5 @@ public class Book {
         this.bookComponentsList = bookComponentsList;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", book_name='" + book_name + '\'' +
-                ", author=" + author +
-                ", bookComponentsList=" + bookComponentsList +
-                '}';
-    }
+
 }

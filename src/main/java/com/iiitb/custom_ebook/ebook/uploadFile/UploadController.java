@@ -35,7 +35,7 @@ public class UploadController {
             String doc_path=uploadService.uploadNewFile(file,temp_book);
 
            if(!doc_path.equals("failure")) {
-               //Book temp_book = uploadService.getBook(id);
+//               Book temp_book = uploadService.getBook(id);
 
                List<Keywords> keywords_list=uploadService.addKeywords(keywords);
 
@@ -49,11 +49,6 @@ public class UploadController {
         return "failure";
     }
 
-    @GetMapping("/generate")
-    public String generateBook()
-    {
-        return uploadService.clubDocuments();
-    }
 
 }
 

@@ -1,4 +1,5 @@
 package com.iiitb.custom_ebook.ebook.Book.Keywords;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
 
 import java.util.*;
@@ -15,7 +16,8 @@ public class Keywords {
     @Column(nullable = false,unique = true)
     private String keyword;
 
-    @ManyToMany(mappedBy = "keywordsList")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "keywordsList",fetch = FetchType.LAZY)
     private List<BookComponents> bookComponentsList;
 
     public Keywords() {
@@ -37,6 +39,7 @@ public class Keywords {
         this.keyword = keyword;
     }
 
+
     public List<BookComponents> getBookComponentsList() {
         return bookComponentsList;
     }
@@ -45,12 +48,5 @@ public class Keywords {
         this.bookComponentsList = bookComponentsList;
     }
 
-    @Override
-    public String toString() {
-        return "Keywords{" +
-                "id=" + id +
-                ", keyword='" + keyword + '\'' +
-                ", bookComponentsList=" + bookComponentsList +
-                '}';
-    }
+
 }
