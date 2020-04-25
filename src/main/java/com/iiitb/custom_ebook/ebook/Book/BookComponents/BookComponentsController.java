@@ -19,4 +19,6 @@ public class BookComponentsController {
         return bookComponentsService.getAllBookComponents();
     }
 
+
+
 }
