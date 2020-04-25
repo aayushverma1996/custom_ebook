@@ -30,11 +30,7 @@ public class KeywordsController {
     @GetMapping("/keywords/bookComp/{keyword}")
     public List<BookComponents> get(@PathVariable String keyword)
     {
-
-//        List<BookComponents> response= keywordsService.getAllBookComp_bySpecifiedKeyword(keyword);
-//        return response;
-
-        Keywords k=keywordsService.getSpecificKeyword(keyword);
+        Keywords k = keywordsService.getSpecificKeyword(keyword);
         return k.getBookComponentsList();
 
     }
