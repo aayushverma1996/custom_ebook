@@ -19,19 +19,23 @@ public class DownloadController {
 
     @GetMapping("/file")
     public void getDownloadPDF(HttpServletRequest request, HttpServletResponse response,
-                               @RequestParam("ids") String ids) throws IOException {
+                               @RequestParam("ids") String ids,@RequestParam("toc") int toc) throws IOException {
 
         String[] ids_generated = ids.split(",");
-
-        List<BookComponents> requested_Components = downloadService.getRequestedBookComp(ids_generated);
-        String file_name = downloadService.generate_ebook(requested_Components);
-
+        List<Integer> no_pages=new ArrayList<Integer>();
+        List<BookComponents> requested_Components = downloadService.getBookComponents(ids_generated);
+        String file_name = downloadService.generate_ebook(requested_Components,no_pages);
+        System.out.println(no_pages.size());
         System.out.println(file_name);
         File file = new File(file_name);
 
 
         if (file.exists()) {
 
+            if(toc==1)
+            {
+                downloadService.generate_index(requested_Components,no_pages,file);
+            }
 
             String mimeType = URLConnection.guessContentTypeFromName(file.getName());
             if (mimeType == null) {
@@ -52,6 +56,7 @@ public class DownloadController {
 
 
     }
+
 
 
 
