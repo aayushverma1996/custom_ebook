@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
 import java.io.*;
 import java.net.URLConnection;
 import java.util.*;
@@ -18,8 +19,10 @@ public class DownloadController {
 
 
     @GetMapping("/file")
-    public void getDownloadPDF(HttpServletRequest request, HttpServletResponse response,
-                               @RequestParam("ids") String ids,@RequestParam("toc") int toc) throws IOException {
+//    public void getDownloadPDF(HttpServletRequest request, HttpServletResponse response,
+//                               @RequestParam("ids") String ids,@RequestParam("toc") int toc) throws IOException {
+    public String getDownloadPDF(@RequestParam("ids") String ids,@RequestParam("toc") int toc) throws IOException {
+
 
         String[] ids_generated = ids.split(",");
         List<Integer> no_pages=new ArrayList<Integer>();
@@ -29,35 +32,38 @@ public class DownloadController {
         System.out.println(file_name);
         File file = new File(file_name);
 
-
         if (file.exists()) {
 
-            if(toc==1)
-            {
-                downloadService.generate_index(requested_Components,no_pages,file);
+            if (toc == 1) {
+                downloadService.generate_index(requested_Components, no_pages, file);
             }
+        }
 
-            String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-            if (mimeType == null) {
-                //unknown mimetype so set the mimetype to application/octet-stream
-                mimeType = "application/octet-stream";
-            }
-            response.setContentType(mimeType);
+        return file_name;
 
-            response.setHeader("Content-Disposition", String.format("attachment; file_name=\"" + file.getName() + "\""));
-
-            response.setContentLength((int) file.length());
-
-            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-
-            FileCopyUtils.copy(inputStream, response.getOutputStream());
+//        if (file.exists()) {
+//
+//            if(toc==1)
+//            {
+//                downloadService.generate_index(requested_Components,no_pages,file);
+//            }
+//
+//            String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+//            if (mimeType == null) {
+//                //unknown mimetype so set the mimetype to application/octet-stream
+//                mimeType = "application/octet-stream";
+//            }
+//            response.setContentType(mimeType);
+//
+//            response.setHeader("Content-Disposition", String.format("attachment; file_name=\"" + file.getName() + "\""));
+//
+//            response.setContentLength((int) file.length());
+//
+//            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+//
+//            FileCopyUtils.copy(inputStream, response.getOutputStream());
 
         }
 
 
     }
-
-
-
-
-}
