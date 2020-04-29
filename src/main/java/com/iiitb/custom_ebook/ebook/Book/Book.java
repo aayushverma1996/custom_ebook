@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.iiitb.custom_ebook.ebook.Author.Author;
 import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
@@ -15,6 +16,13 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+
+    @NaturalId
+    @Column(name = "isbn",length = 20)
+    private String ISBN;
+
+    @Column(name="publisher",length = 100)
+    private String publisher;
 
     @Column(length=50,unique = true,nullable = false)
     private String book_name;
@@ -67,5 +75,19 @@ public class Book {
         this.bookComponentsList = bookComponentsList;
     }
 
+    public String getISBN() {
+        return ISBN;
+    }
 
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
 }

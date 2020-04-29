@@ -281,7 +281,7 @@ public class DownloadService {
         }
         return temp_file.getPath();
     }
-   @Scheduled(cron = "* 0/2 * * * *")
+   @Scheduled(cron = "* 0/30 * * * *") // every 30min cron job
     public  void destroy_generated_toc()
     {
         File folder_generated=new File(GENERATED_FOLDER);
@@ -293,7 +293,7 @@ public class DownloadService {
         System.out.println(Calendar.getInstance().getTime()+" executed");
         long time=date.getTime();
 
-        long deadline=2*60*1000;  //30 min in millisec
+        long deadline=30*60*1000;  //30 min in millisec
         for(File file:file_list)
         {
 
