@@ -2,14 +2,10 @@ package com.iiitb.custom_ebook.ebook.donwloadFile;
 
 import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
 import java.io.*;
-import java.net.URLConnection;
+
 import java.util.*;
 @RestController
 public class DownloadController {
@@ -25,21 +21,20 @@ public class DownloadController {
 
 
         String[] ids_generated = ids.split(",");
-        List<Integer> no_pages=new ArrayList<Integer>();
+
         List<BookComponents> requested_Components = downloadService.getBookComponents(ids_generated);
-        String file_name = downloadService.generate_ebook(requested_Components,no_pages);
-        System.out.println(no_pages.size());
+        String file_name = downloadService.generate_ebook(requested_Components);
+
         System.out.println(file_name);
         File file = new File(file_name);
-
-        if (file.exists()) {
-
-            if (toc == 1) {
-                downloadService.generate_index(requested_Components, no_pages, file);
-            }
+        String final_file=file.getPath();
+        if (toc == 1) {
+            String toc_generated = downloadService.generate_index(requested_Components);
+            final_file=downloadService.merge_toc_main(new File(file_name),new File(toc_generated));
         }
 
-        return file_name;
+
+        return final_file;
 
 //        if (file.exists()) {
 //
@@ -64,6 +59,10 @@ public class DownloadController {
 //            FileCopyUtils.copy(inputStream, response.getOutputStream());
 
         }
+
+
+
+
 
 
     }
