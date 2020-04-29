@@ -8,7 +8,7 @@ public class AuthorBookWrapper {
 
     private Book book_name;
     private Author author_name;
-    private String ISBN;
+    private String isbn;
     private String publisher;
 
     public AuthorBookWrapper() {
@@ -36,11 +36,11 @@ public class AuthorBookWrapper {
     }
 
     public String getISBN() {
-        return ISBN;
+        return isbn;
     }
 
     public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+        this.isbn = ISBN;
     }
 
     public String getPublisher() {

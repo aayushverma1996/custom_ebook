@@ -18,7 +18,7 @@ public class Book {
     private int id;
 
     @NaturalId
-    @Column(name = "isbn",length = 20)
+    @Column(name = "isbn",length = 20,nullable = false)
     private String ISBN;
 
     @Column(name="publisher",length = 100)

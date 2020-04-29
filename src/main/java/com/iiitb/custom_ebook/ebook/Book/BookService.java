@@ -20,6 +20,7 @@ public class BookService {
 
          Author temp_author=authorService.addNewAuthor(authorBookWrapper.getAuthor_name());
          authorBookWrapper.getBook_name().setAuthor(temp_author);
+
          authorBookWrapper.getBook_name().setISBN(authorBookWrapper.getISBN());
          authorBookWrapper.getBook_name().setPublisher(authorBookWrapper.getPublisher());
          return  bookRepository.save(authorBookWrapper.getBook_name());
