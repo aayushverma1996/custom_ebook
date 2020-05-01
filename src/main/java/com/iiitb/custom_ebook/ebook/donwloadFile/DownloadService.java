@@ -24,6 +24,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.awt.*;
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -102,6 +103,7 @@ public class DownloadService {
                 PDPageContentStream contentStream = new PDPageContentStream(doc, page, PDPageContentStream.AppendMode.APPEND, true, false);
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.TIMES_ITALIC, 10);
+                contentStream.setStrokingColor(Color.BLACK);
                 PDRectangle pageSize = page.getCropBox();
                 float x = pageSize.getLowerLeftX();
                 float y = pageSize.getLowerLeftY();
@@ -148,6 +150,17 @@ public class DownloadService {
             // root element -index
             Element rootElement = doc.createElement("index");
             doc.appendChild(rootElement);
+
+            //<cover> name </cover>
+            Element cover=doc.createElement("cover");
+            cover.appendChild(doc.createTextNode("Sample custom E-Book"));
+            rootElement.appendChild(cover);
+
+
+            //   <generatedby> name </generatedby>
+            Element generated_by=doc.createElement("generatedby");
+            generated_by.appendChild(doc.createTextNode("sample generator"));
+            rootElement.appendChild(generated_by);
 
             // heading element child of root
             Element heading = doc.createElement("heading");
