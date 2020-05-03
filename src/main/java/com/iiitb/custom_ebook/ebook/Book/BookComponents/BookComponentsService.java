@@ -52,12 +52,12 @@ public class BookComponentsService {
         return keyword.getBookComponentsList();
     }
 
-    public List<BookComponents> getRequestedBookComp(String[] requestbookCompId)
+    public List<BookComponents> getRequestedBookComp(List<String> requestbookCompId)
     {
         List<BookComponents> generate_bookComponentsList=new ArrayList<BookComponents>();
-        for(int i=0;i<requestbookCompId.length;i++)
+        for(int i=0;i<requestbookCompId.size();i++)
         {
-            generate_bookComponentsList.add(bookComponentsRepository.findById(Integer.parseInt(requestbookCompId[i])).get());
+            generate_bookComponentsList.add(bookComponentsRepository.findById(Integer.parseInt(requestbookCompId.get(i))).get());
         }
 
         for(int i=0;i<generate_bookComponentsList.size();i++)

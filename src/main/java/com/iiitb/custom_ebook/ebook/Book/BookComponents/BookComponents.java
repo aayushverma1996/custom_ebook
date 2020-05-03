@@ -22,6 +22,16 @@ public class BookComponents implements Serializable{
     @Column(nullable = false)
     private String location;
 
+    @Column
+    private double price;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="book_id")

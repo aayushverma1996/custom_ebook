@@ -7,16 +7,16 @@ public class AuthorBookWrapper {
 
 
     private Book book_name;
-    private Author author_name;
+    private String authors;
     private String isbn;
-    private String publisher;
+    private int publisher_id;
 
     public AuthorBookWrapper() {
     }
 
-    public AuthorBookWrapper(Book book_name, Author author_name) {
+    public AuthorBookWrapper(Book book_name) {
         this.book_name = book_name;
-        this.author_name = author_name;
+
     }
 
     public Book getBook_name() {
@@ -27,27 +27,36 @@ public class AuthorBookWrapper {
         this.book_name = book_name;
     }
 
-    public Author getAuthor_name() {
-        return author_name;
+    public String getAuthors() {
+        return authors;
     }
 
-    public void setAuthor_name(Author author_name) {
-        this.author_name = author_name;
+    public void setAuthors(String authors) {
+        this.authors = authors;
     }
 
-    public String getISBN() {
+    public int getPublisher_id() {
+        return publisher_id;
+    }
+
+    public void setPublisher_id(int publisher_id) {
+        this.publisher_id = publisher_id;
+    }
+
+
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setISBN(String ISBN) {
-        this.isbn = ISBN;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public int getPublisher() {
+        return publisher_id;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setPublisher(int publisher) {
+        this.publisher_id = publisher;
     }
 }

@@ -1,7 +1,9 @@
-package com.iiitb.custom_ebook.ebook.donwloadFile;
+package com.iiitb.custom_ebook.ebook.Custom_EBook;
 
 import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
 import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponentsService;
+import com.iiitb.custom_ebook.ebook.User.User;
+import com.iiitb.custom_ebook.ebook.User.UserService;
 import org.apache.fop.apps.*;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.xml.crypto.Data;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.*;
@@ -26,16 +27,24 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 @Service
-public class DownloadService {
+public class Custom_EBookService {
 
     @Autowired
     private BookComponentsService bookComponentsService;
+
+    @Autowired
+    private Custom_EBookRepository custom_eBookRepository;
+
+    @Autowired
+    private UserService userService;
+
     @Value("generated")
     private String GENERATED_FOLDER;
 
@@ -45,37 +54,34 @@ public class DownloadService {
     @Value("merged")
     private String MERGE_FOLDER;
 
-    public List<BookComponents> getBookComponents(String[] ids) {
+    public List<BookComponents> getBookComponents(List<String> ids) {
         return bookComponentsService.getRequestedBookComp(ids);
     }
 
-    public String generate_ebook(List<BookComponents> bookComponents) {
+    public String generate_ebook(List<BookComponents> bookComponents,int uid,int toc) throws IOException {
 
 
        // String dir_path = Paths.get("").toAbsolutePath().toString();
         String file_name = Integer.toString(bookComponents.get(0).getId());
-
         for (int i = 1; i < bookComponents.size(); i++) {
             file_name += "_" + bookComponents.get(i).getId();
         }
+
         file_name = GENERATED_FOLDER + File.separator + file_name + ".pdf";
-
-
-
         File f = new File(file_name);
 
-        //to check if existing book is present
-
+        //to check if existing ebook component is present
         if (f.exists()) {
-
-            return f.getPath();
+            String newFilename=MERGE_FOLDER + File.separator+uid+"_"+toc+"_"+f.getName();
+            File newFile = new File(newFilename);
+            Files.copy(f.toPath(),newFile.toPath());
+            return newFile.getPath();
         }
 
+
         //merging logic
-
         PDFMergerUtility merge = new PDFMergerUtility();
-        merge.setDestinationFileName(file_name);
-
+        merge.setDestinationFileName(f.getPath());
         try {
             for (int i = 0; i < bookComponents.size(); i++) {
 
@@ -89,7 +95,10 @@ public class DownloadService {
         }
         generate_page_numbers(file_name);
 
-        return f.getPath();
+        String newFilename=MERGE_FOLDER + File.separator+uid+"_"+toc+"_"+f.getName();
+        File newFile = new File(newFilename);
+        Files.copy(f.toPath(),newFile.toPath());
+        return newFile.getPath();
     }
 
     public void generate_page_numbers(String file_name) {
@@ -124,7 +133,7 @@ public class DownloadService {
     }
 
 
-    public String generate_index(List<BookComponents> book_components) {
+    public String generate_index(List<BookComponents> book_components,String ebookname,String generatedby) {
 
         String index_file_name= Integer.toString(book_components.get(0).getId());
 
@@ -136,11 +145,8 @@ public class DownloadService {
         {
             index_folder.mkdir();
         }
+
         File indexfile=new File(INDEX_FOLDER+File.separator+index_file_name+"_index.pdf");
-        if(indexfile.exists())
-        {
-            return indexfile.getPath();
-        }
 
         try {
 
@@ -153,13 +159,13 @@ public class DownloadService {
 
             //<cover> name </cover>
             Element cover=doc.createElement("cover");
-            cover.appendChild(doc.createTextNode("Sample custom E-Book"));
+            cover.appendChild(doc.createTextNode(ebookname));
             rootElement.appendChild(cover);
 
 
             //   <generatedby> name </generatedby>
             Element generated_by=doc.createElement("generatedby");
-            generated_by.appendChild(doc.createTextNode("sample generator"));
+            generated_by.appendChild(doc.createTextNode(generatedby));
             rootElement.appendChild(generated_by);
 
             // heading element child of root
@@ -277,56 +283,128 @@ public class DownloadService {
     }
 
     public String merge_toc_main(File generated,File index) throws IOException {
+
             File merge_dir=new File(MERGE_FOLDER);
             if(!merge_dir.exists())
             {
                 merge_dir.mkdir();
             }
-        PDFMergerUtility merge = new PDFMergerUtility();
-        merge.setDestinationFileName(merge_dir.getAbsolutePath()+File.separator+"temp.pdf");
-        merge.addSource(index);
-        merge.addSource(generated);
-        merge.mergeDocuments(null);
-        File temp_file=new File(merge_dir.getPath()+File.separator+"temp.pdf");
-        if(!temp_file.exists())
-        {
-            return null;
-        }
-        return temp_file.getPath();
+            PDFMergerUtility merge = new PDFMergerUtility();
+            merge.setDestinationFileName(merge_dir.getAbsolutePath()+File.separator+generated.getName());
+            merge.addSource(index);
+            merge.addSource(generated);
+            merge.mergeDocuments(null);
+            File temp_file=new File(merge_dir.getPath()+File.separator+generated.getName());
+            System.out.println(temp_file+"++++");
+            if(!temp_file.exists())
+            {
+                return null;
+            }
+            return temp_file.getPath();
     }
-   @Scheduled(cron = "* 0/30 * * * *") // every 30min cron job
-    public  void destroy_generated_toc()
+
+    public void addToUser(int uid,List<BookComponents> components,int toc,String ebookname,String genby)
     {
-        File folder_generated=new File(GENERATED_FOLDER);
-        File[] file_list=folder_generated.listFiles();
-        File folder_toc=new File(INDEX_FOLDER);
-        File[] files=folder_toc.listFiles();
-        List<Long> out=new ArrayList<Long>();
-        Date date=new Date();
-        System.out.println(Calendar.getInstance().getTime()+" executed");
-        long time=date.getTime();
+        User user=userService.getUserbyId(uid);
 
-        long deadline=30*60*1000;  //30 min in millisec
-        for(File file:file_list)
-        {
-
-            if(time-file.lastModified()>deadline)
-            {
-                file.delete();
-                System.out.println("file deleted 1");
-            }
-        }
-        for(File file:files)
-        {
-
-            if(time-file.lastModified()>deadline)
-            {
-                file.delete();
-                System.out.println("file deleted 1");
-            }
+        //book_components merge file name
+        String filename= Integer.toString(components.get(0).getId());
+        for (int i = 1; i < components.size(); i++) {
+                filename += "_" + components.get(i).getId();
         }
 
+        String location=toc+"_"+user.getId()+"_"+filename;
+
+
+        //total price of this component
+        double price =components.stream().mapToDouble(x->x.getPrice()).sum();
+        Custom_EBook c=new Custom_EBook();
+        c.seteBookName(ebookname);
+        c.setGeneratedBy(genby);
+        c.setPrice(price);
+        c.setLocation(location);
+        c.setStatus((byte)1);
+        c.setUser(user);
+        custom_eBookRepository.save(c);
     }
+
+    public void updateLocation(String location,byte status,int ebookId)
+    {
+        Custom_EBook ebook=custom_eBookRepository.findById(ebookId).get();
+        ebook.setLocation(location);
+        ebook.setStatus(status);
+        custom_eBookRepository.save(ebook);
+    }
+
+    public String buildEBook(Custom_EBook eBook) throws IOException {
+
+        String[] location=eBook.getLocation().split("_");
+
+        List<String> component_ids=new ArrayList<String>();
+        int toc=Integer.parseInt(location[0]);
+        int uid=Integer.parseInt(location[1]);
+        for(int i=2;i<location.length;i++)
+        {
+           component_ids.add(location[i]);
+        }
+        List<BookComponents> bookComponentsList=bookComponentsService.getRequestedBookComp(component_ids);
+        String filename=null;
+        filename=generate_ebook(bookComponentsList,uid,toc);
+        System.out.println(filename+"==");
+        if(toc==1)
+        {
+              String index=generate_index(bookComponentsList,eBook.geteBookName(),eBook.getGeneratedBy());
+              System.out.println(index+"--");
+              filename=merge_toc_main(new File(filename),new File(index));
+              System.out.println(filename+"**");
+        }
+        //update location and status
+        updateLocation(filename,(byte)3,eBook.getId());
+        return "Success";
+    }
+
+    public Custom_EBook getEBookbyId(int id)
+    {
+        return custom_eBookRepository.findById(id).get();
+    }
+
+
+
+
+
+//    @Scheduled(cron = "* 0/30 * * * *") // every 30min cron job
+//    public void destroy_generated_toc()
+//    {
+//        File folder_generated=new File(GENERATED_FOLDER);
+//        File[] file_list=folder_generated.listFiles();
+//        File folder_toc=new File(INDEX_FOLDER);
+//        File[] files=folder_toc.listFiles();
+//        List<Long> out=new ArrayList<Long>();
+//        Date date=new Date();
+//        System.out.println(Calendar.getInstance().getTime()+" executed");
+//        long time=date.getTime();
+//
+//        long deadline=30*60*1000;  //30 min in millisec
+//        for(File file:file_list)
+//        {
+//
+//            if(time-file.lastModified()>deadline)
+//            {
+//                file.delete();
+//                System.out.println("file deleted 1");
+//            }
+//        }
+//        for(File file:files)
+//        {
+//
+//            if(time-file.lastModified()>deadline)
+//            {
+//                file.delete();
+//                System.out.println("file deleted 1");
+//            }
+//        }
+//
+//    }
 
 
 }

@@ -13,22 +13,20 @@ import javax.persistence.*;
 public class Author {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(nullable = false,length = 100,unique = true)
-    private String author_name;
+    @Column(nullable = false,length = 100)
+    private String authorName;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "author",fetch = FetchType.LAZY)
-    private List<Book>books;
 
     public Author() {
     }
 
-    public Author(String author_name)
+
+    public Author(String authorName)
     {
-        this.author_name=author_name;
+        this.authorName=authorName;
     }
 
     public int getId() {
@@ -40,20 +38,11 @@ public class Author {
     }
 
     public String getAuthor_name() {
-        return author_name;
+        return authorName;
     }
 
-    public void setAuthor_name(String author_name) {
+    public void setAuthorName(String author_name) {
         author_name = author_name;
     }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
 
 }

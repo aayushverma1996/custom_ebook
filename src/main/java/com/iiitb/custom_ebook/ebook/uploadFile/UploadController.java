@@ -28,18 +28,16 @@ public class UploadController {
     public String singleFileUpload(@RequestParam("file") MultipartFile file,
                                    @RequestParam("id") int id,
                                    @RequestParam("topic") String topic,
-                                   @RequestParam("keywords") String keywords
+                                   @RequestParam("keywords") String keywords,
+                                   @RequestParam("price") double price
     ) {
 
             Book temp_book = uploadService.getBook(id);
             String doc_path=uploadService.uploadNewFile(file,temp_book);
 
            if(!doc_path.equals("failure")) {
-//               Book temp_book = uploadService.getBook(id);
-
                List<Keywords> keywords_list=uploadService.addKeywords(keywords);
-
-               BookComponents response= uploadService.addNewBookComponents(temp_book, doc_path, topic,keywords_list);
+               BookComponents response= uploadService.addNewBookComponents(temp_book, doc_path, topic,keywords_list,price);
 
 
                return "success";

@@ -43,12 +43,13 @@ public class UploadService {
     }
 
 
-    public BookComponents addNewBookComponents(Book book, String doc_path, String topic, List<Keywords> keywords) {
+    public BookComponents addNewBookComponents(Book book, String doc_path, String topic, List<Keywords> keywords,double price) {
         BookComponents newbookComponents = new BookComponents();
         newbookComponents.setComponent_name(topic);
         newbookComponents.setLocation(doc_path);
         newbookComponents.setBook(book);
         newbookComponents.setKeywordsList(keywords);
+        newbookComponents.setPrice(price);
         return bookComponentsService.insertNewEntry(newbookComponents);
 
     }
@@ -69,7 +70,7 @@ public class UploadService {
                     + DOCS_FOLDER + File.separator
                     + UPLOADED_FOLDER + File.separator
                     + book.getBook_name() + File.separator;
-//
+
             System.out.println("Upload Book Path String : " + upload_book_path);
             File create_directory = new File(upload_book_path);
             if (!create_directory.exists()) {
@@ -87,25 +88,6 @@ public class UploadService {
                 System.out.println("Directory already existed, File Created At Path :" + path);
                 Files.write(path, bytes);
             }
-
-            //old code
-            // Get the file and save it somewhere
-
-//            File dir = new File(UPLOADED_FOLDER);
-//
-//            if (!dir.exists()) {
-//                dir.mkdir();
-//            }
-//
-//            byte[] bytes = file.getBytes();
-//            String dir_path = Paths.get("").toAbsolutePath().toString();
-//
-//
-//            doc_path = dir_path + File.separator + dir + File.separator + file.getOriginalFilename();
-//            Path path = Paths.get(doc_path);
-//
-//            System.out.println(doc_path);
-//            Files.write(path, bytes);
 
         } catch (IOException e) {
 

@@ -1,5 +1,4 @@
 package com.iiitb.custom_ebook.ebook.Book.Keywords;
-
 import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +29,10 @@ public class KeywordsController {
     @GetMapping("/keywords/bookComp/{keyword}")
     public List<BookComponents> get(@PathVariable String keyword)
     {
-        Keywords k = keywordsService.getSpecificKeyword(keyword);
+        Keywords k = keywordsService.getSpecificKeyword(keyword.toLowerCase());
         return k.getBookComponentsList();
 
     }
+
 
 }
