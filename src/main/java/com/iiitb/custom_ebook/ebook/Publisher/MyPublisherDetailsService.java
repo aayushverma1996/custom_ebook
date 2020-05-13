@@ -16,9 +16,14 @@ public class MyPublisherDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Publisher> user = publisherRepository.findByUsername(username);
-        user.orElseThrow(()->new UsernameNotFoundException("Not Found: "+username));
+       // user.orElseThrow(()->new UsernameNotFoundException("Not Found: "+username));
 
-        Publisher u=user.get();
+
+        Publisher u=user.orElse(null);
+        if(u==null)
+        {
+            return null;
+        }
         MyPublisherDetails details=new MyPublisherDetails(u);
         return details;
     }

@@ -1,9 +1,11 @@
 package com.iiitb.custom_ebook.ebook.JwtUtil;
+import com.iiitb.custom_ebook.ebook.Publisher.MyPublisherDetailsService;
 import com.iiitb.custom_ebook.ebook.SecurityConfiguration.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,6 +26,8 @@ import java.io.IOException;
         @Autowired
         MyUserDetailsService myUserDetailsService;
         @Autowired
+        MyPublisherDetailsService myPublisherDetailsService;
+        @Autowired
         JwtUtil jwtUtil;
 
         @Override
@@ -40,6 +44,11 @@ import java.io.IOException;
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(username);
+                if(userDetails==null)
+                {
+                    UserDetails temp_details=this.myPublisherDetailsService.loadUserByUsername(username);
+
+                }
 
                 if (jwtUtil.validateToken(jwt, userDetails)) {
 
