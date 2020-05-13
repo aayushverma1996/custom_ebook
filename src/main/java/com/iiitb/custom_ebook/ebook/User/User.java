@@ -1,5 +1,6 @@
 package com.iiitb.custom_ebook.ebook.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iiitb.custom_ebook.ebook.Custom_EBook.Custom_EBook;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class User {
     @Column(length=50,nullable = false,unique = true)
     private String username;
 
+    @JsonIgnore
     @Column(length=50,nullable = false)
     private String password;
 

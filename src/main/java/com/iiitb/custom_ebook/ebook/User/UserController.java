@@ -25,8 +25,8 @@ public class UserController {
         return userService.insertUser(user);
     }
 
-    @GetMapping("/user/ebooks")
-    public List<Custom_EBook> getEBooks(@RequestParam("uid") int uid)
+    @GetMapping("/user/ebooks/{uid}")
+    public List<Custom_EBook> getEBooks(@PathVariable("uid") int uid)
     {
         User user=userService.getUserbyId(uid);
         return userService.getAssociatedEBooks(user).getCustom_eBooks();

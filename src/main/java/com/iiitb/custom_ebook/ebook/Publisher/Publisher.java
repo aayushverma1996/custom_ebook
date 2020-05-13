@@ -21,13 +21,19 @@ public class Publisher {
 
     @Column(length=50,nullable = false,unique = true)
     private String username;
-
+    @JsonIgnore
     @Column(length=50,nullable = false)
     private String password;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "publisher")
     private List<Book> book_list;
+
+    @Column
+    private boolean active;
+
+    @Column
+    private  String roles;
 
     public Publisher() {
     }
@@ -83,5 +89,21 @@ public class Publisher {
 
     public void setBook_list(List<Book> book_list) {
         this.book_list = book_list;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 }
