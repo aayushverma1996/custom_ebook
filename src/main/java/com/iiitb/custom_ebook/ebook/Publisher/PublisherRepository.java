@@ -13,4 +13,6 @@ public interface PublisherRepository extends CrudRepository<Publisher,Integer> {
     @Query("select p from Publisher p join fetch p.book_list where p.id=:pid")
     public Optional<Publisher> getBooks(@Param("pid") int pid);
 
+    public Optional<Publisher> findByUsername(String username);
+
 }

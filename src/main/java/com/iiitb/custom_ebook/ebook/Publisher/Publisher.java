@@ -13,14 +13,14 @@ public class Publisher {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @Column(length = 100,nullable = false,unique = true)
+    @Column(length = 100,nullable = false)
     private String name;
 
     @Column(length=100)
     private String address;
 
     @Column(length=50,nullable = false,unique = true)
-    private String user_name;
+    private String username;
 
     @Column(length=50,nullable = false)
     private String password;
@@ -34,7 +34,7 @@ public class Publisher {
     public Publisher(String name,String user_name,String password)
     {
         this.name=name;
-        this.user_name=user_name;
+        this.username=user_name;
         this.password=password;
     }
     public int getId() {
@@ -61,12 +61,12 @@ public class Publisher {
         this.address = address;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUsername(String user_name) {
+        this.username = user_name;
     }
 
     public String getPassword() {

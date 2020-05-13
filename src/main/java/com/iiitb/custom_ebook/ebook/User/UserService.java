@@ -27,4 +27,9 @@ public class UserService {
     {
         return userRepository.getebooks(u.getId()).get();
     }
+
+    public User fetchUserbyUsername(String username)
+    {
+        return userRepository.findByUsername(username).orElse(null);
+    }
 }

@@ -32,4 +32,8 @@ public class PublisherService {
         return publisherRepository.getBooks(pid).get();
     }
 
+    public Publisher fetchPublisherUsername(String username)
+    {
+        return publisherRepository.findByUsername(username).orElse(null);
+    }
 }

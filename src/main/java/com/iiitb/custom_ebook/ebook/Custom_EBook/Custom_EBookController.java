@@ -11,6 +11,7 @@ import java.io.*;
 
 import java.net.URLConnection;
 import java.util.*;
+@CrossOrigin("*")
 @RestController
 public class Custom_EBookController {
 
@@ -81,7 +82,7 @@ public class Custom_EBookController {
 
     }
 
-    @GetMapping("/downlaod")
+    @GetMapping("/download")
     public void Download(HttpServletRequest request, HttpServletResponse response,@RequestParam("ebookid") int ebookId) throws IOException {
 
         Custom_EBook eBook=customEBookService.getEBookbyId(ebookId);

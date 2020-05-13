@@ -49,4 +49,9 @@ public class BookService {
         return bookRepository.getComponents(book.getId()).getBookComponentsList();
     }
 
+    public Book fetchBookISBN(String isbn)
+    {
+        return bookRepository.findByISBN(isbn).orElse(null);
+    }
+
 }

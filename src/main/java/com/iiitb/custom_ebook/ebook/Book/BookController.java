@@ -2,6 +2,7 @@ package com.iiitb.custom_ebook.ebook.Book;
 
 import com.iiitb.custom_ebook.ebook.Author.Author;
 import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
+import com.iiitb.custom_ebook.ebook.Exceptions.FoundException;
 import com.iiitb.custom_ebook.ebook.WrapperClasses.AuthorBookWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,12 @@ public class BookController {
     @PostMapping("/bookauthor")
     public int createNewBook(@RequestBody AuthorBookWrapper authorBookWrapper)
     {
+        Book getBook=bookService.fetchBookISBN(authorBookWrapper.getIsbn());
+
+        if(getBook!=null)
+        {
+            throw new FoundException("ISBN already present.");
+        }
 
         Book book= bookService.addNewBook(authorBookWrapper);
         return book.getId();

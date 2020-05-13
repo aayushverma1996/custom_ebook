@@ -10,11 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@CrossOrigin("*")
 @RestController
 public class AuthenticationController {
 
@@ -41,13 +42,14 @@ public class AuthenticationController {
             userDetails = userDetailService.loadUserByUsername(username);
             System.out.println(userDetails.getUsername());
             jwt = jwtTokenUtil.generateToken(userDetails);
+            List<String> roles=userDetails.getAuthorities().stream().map(x->x.toString()).collect(Collectors.toList());
+            CustomJwt customJwt=new CustomJwt(jwt,userDetails.getUsername(),roles);
+            return ResponseEntity.ok(customJwt);
 
         }catch (Exception e){
             System.out.println("User Not Authenticated");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new UsernameNotFoundException("User name of password is incorrect");
         }
-        List<String> roles=userDetails.getAuthorities().stream().map(x->x.toString()).collect(Collectors.toList());
-        CustomJwt customJwt=new CustomJwt(jwt,userDetails.getUsername(),roles);
-        return ResponseEntity.ok(customJwt);
+
     }
 }
