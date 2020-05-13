@@ -36,6 +36,7 @@ import java.io.IOException;
                 jwt = authorizationHeader.substring(7);
                 username= jwtUtil.extractUsername(jwt);
             }
+
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(username);

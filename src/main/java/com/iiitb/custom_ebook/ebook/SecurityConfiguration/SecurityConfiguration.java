@@ -32,8 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/bookcomponent").hasAnyRole("USER","ADMIN")
-                .antMatchers("/bookcomponent").hasAnyRole("USER","ADMIN")
+                .antMatchers("/bookcomponent").permitAll()
                 .antMatchers("/keywords/bookComp/{keyword}").permitAll()
                 .antMatchers("/keywords/{keyword}").permitAll()
                 .antMatchers("/bookauthor").permitAll()
@@ -46,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/upload").permitAll()
                 .antMatchers("/user").permitAll()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/login").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
