@@ -1,6 +1,7 @@
 package com.iiitb.custom_ebook.ebook.User;
 
 import com.iiitb.custom_ebook.ebook.Custom_EBook.Custom_EBook;
+import com.iiitb.custom_ebook.ebook.Exceptions.EmptyException;
 import com.iiitb.custom_ebook.ebook.Exceptions.FoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +18,23 @@ public class UserController {
     public int createUser(@RequestBody User user)
     {
         User existingUser=userService.fetchUserbyUsername(user.getUsername());
-
+        System.out.println(user.getPassword());
         if(existingUser!=null)
         {
             throw new FoundException("username already taken!!Try different one");
         }
-        return userService.insertUser(user);
+        return userService.insertUser(user).getId();
     }
 
     @GetMapping("/user/ebooks/{uid}")
     public List<Custom_EBook> getEBooks(@PathVariable("uid") int uid)
     {
         User user=userService.getUserbyId(uid);
-        return userService.getAssociatedEBooks(user).getCustom_eBooks();
+        List<Custom_EBook>temp=userService.getAssociatedEBooks(user).getCustom_eBooks();
+      if(temp.size()==0)
+      {
+            throw new EmptyException();
+      }
+      return temp;
     }
 }

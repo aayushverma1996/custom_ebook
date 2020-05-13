@@ -38,7 +38,7 @@ public class KeywordsService {
     public Keywords getSpecificKeyword(String keywordname)
     {
 
-        return keywordsRepository.getComponents(keywordname).get();
+        return keywordsRepository.getComponents(keywordname).orElse(null);
 
     }
 

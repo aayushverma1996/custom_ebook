@@ -1,5 +1,6 @@
 package com.iiitb.custom_ebook.ebook.Book.Keywords;
 import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
+import com.iiitb.custom_ebook.ebook.Exceptions.EmptyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,10 @@ public class KeywordsController {
     public List<BookComponents> get(@PathVariable String keyword)
     {
         Keywords k = keywordsService.getSpecificKeyword(keyword.toLowerCase());
+        if(k==null)
+        {
+            throw new EmptyException();
+        }
         return k.getBookComponentsList();
 
     }

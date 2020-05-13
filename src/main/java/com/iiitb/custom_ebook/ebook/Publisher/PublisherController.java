@@ -2,13 +2,13 @@ package com.iiitb.custom_ebook.ebook.Publisher;
 
 import com.iiitb.custom_ebook.ebook.Author.AuthorService;
 import com.iiitb.custom_ebook.ebook.Book.Book;
+import com.iiitb.custom_ebook.ebook.Exceptions.EmptyException;
 import com.iiitb.custom_ebook.ebook.Exceptions.FoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("*")
 @RestController
 public class PublisherController {
 
@@ -21,7 +21,7 @@ public class PublisherController {
         Publisher getPublisher=publisherService.fetchPublisherUsername(publisher.getUsername());
         if(getPublisher!=null)
         {
-            throw new FoundException("Username is already taken!!Try different");
+            throw new FoundException("Username already taken!! try different");
         }
         return publisherService.createNewPublisher(publisher);
     }
@@ -34,6 +34,12 @@ public class PublisherController {
     @GetMapping("/publisher/book/{pid}")
     public List<Book> getBooks(@PathVariable("pid") int pid)
     {
-        return publisherService.getBooks(pid).getBook_list();
+
+        List<Book> temp=publisherService.getBooks(pid).getBook_list();
+        if(temp.size()==0)
+        {
+            throw new EmptyException();
+        }
+        return temp;
     }
 }

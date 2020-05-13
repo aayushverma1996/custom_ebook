@@ -18,9 +18,9 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
-    public int insertUser(User user)
+    public User insertUser(User user)
     {
-        return userRepository.save(user).getId();
+        return userRepository.save(user);
     }
 
     public User getAssociatedEBooks(User u)

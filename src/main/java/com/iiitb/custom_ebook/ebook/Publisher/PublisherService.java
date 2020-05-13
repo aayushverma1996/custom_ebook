@@ -19,6 +19,7 @@ public class PublisherService {
 
     public int createNewPublisher(Publisher publisher)
     {
+
         return publisherRepository.save(publisher).getId();
     }
 

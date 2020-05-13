@@ -2,12 +2,13 @@ package com.iiitb.custom_ebook.ebook.Publisher;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iiitb.custom_ebook.ebook.Book.Book;
+import com.iiitb.custom_ebook.ebook.User.User;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Publisher {
+public class Publisher{
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -21,7 +22,7 @@ public class Publisher {
 
     @Column(length=50,nullable = false,unique = true)
     private String username;
-    @JsonIgnore
+
     @Column(length=50,nullable = false)
     private String password;
 
