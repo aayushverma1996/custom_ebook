@@ -24,8 +24,8 @@ public class PublisherController {
         return publisherService.getPublisherByname(publisherName).getId();
     }
 
-    @GetMapping("/publisher/book")
-    public List<Book> getBooks(@RequestParam("pid") int pid)
+    @GetMapping("/publisher/book/{pid}")
+    public List<Book> getBooks(@PathVariable("pid") int pid)
     {
         return publisherService.getBooks(pid).getBook_list();
     }
