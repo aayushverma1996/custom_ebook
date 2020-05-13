@@ -18,10 +18,16 @@ public class User {
     private String address;
 
     @Column(length=50,nullable = false,unique = true)
-    private String user_name;
+    private String username;
 
     @Column(length=50,nullable = false)
     private String password;
+
+   @Column
+   private boolean active;
+
+   @Column
+   private  String roles;
 
     @OneToMany(mappedBy = "user")
     private List<Custom_EBook> custom_eBooks;
@@ -53,12 +59,12 @@ public class User {
         this.address = address;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUsername(String user_name) {
+        this.username = user_name;
     }
 
     public String getPassword() {
@@ -75,5 +81,21 @@ public class User {
 
     public void setCustom_eBooks(List<Custom_EBook> custom_eBooks) {
         this.custom_eBooks = custom_eBooks;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 }

@@ -10,4 +10,6 @@ public interface UserRepository extends CrudRepository<User,Integer> {
 
     @Query("select u from User u join fetch u.custom_eBooks where u.id=:id")
      Optional<User> getebooks(@Param("id") int id);
+
+    Optional<User> findByUsername(String username);
 }
