@@ -23,9 +23,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getAssociatedEBooks(User u)
+    public User getAssociatedEBooks(int uid)
     {
-        return userRepository.getebooks(u.getId()).get();
+        return userRepository.getebooks(uid).orElse(null);
     }
 
     public User fetchUserbyUsername(String username)

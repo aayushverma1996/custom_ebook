@@ -30,7 +30,7 @@ public class PublisherService {
 
     public Publisher getBooks(int pid)
     {
-        return publisherRepository.getBooks(pid).get();
+        return publisherRepository.getBooks(pid).orElse(null);
     }
 
     public Publisher fetchPublisherUsername(String username)

@@ -48,6 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/publisher/book/{pid}").permitAll()
                 .antMatchers("/upload").permitAll()
                 .antMatchers("/user").permitAll()
+                .antMatchers("/user/ebooks/{uid}").permitAll()
                 .antMatchers("/publisher").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/login").permitAll()

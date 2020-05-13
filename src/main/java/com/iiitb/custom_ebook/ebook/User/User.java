@@ -31,6 +31,7 @@ public class User {
    @Column
    private  String roles;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Custom_EBook> custom_eBooks;
 

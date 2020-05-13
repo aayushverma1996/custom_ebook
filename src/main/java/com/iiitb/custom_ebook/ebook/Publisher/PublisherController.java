@@ -35,11 +35,12 @@ public class PublisherController {
     public List<Book> getBooks(@PathVariable("pid") int pid)
     {
 
-        List<Book> temp=publisherService.getBooks(pid).getBook_list();
-        if(temp.size()==0)
+        Publisher temp=publisherService.getBooks(pid);
+        if(temp==null)
         {
             throw new EmptyException();
         }
-        return temp;
+
+        return temp.getBook_list();
     }
 }

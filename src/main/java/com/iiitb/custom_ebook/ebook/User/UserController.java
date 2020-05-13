@@ -29,12 +29,12 @@ public class UserController {
     @GetMapping("/user/ebooks/{uid}")
     public List<Custom_EBook> getEBooks(@PathVariable("uid") int uid)
     {
-        User user=userService.getUserbyId(uid);
-        List<Custom_EBook>temp=userService.getAssociatedEBooks(user).getCustom_eBooks();
-      if(temp.size()==0)
-      {
+        User user=userService.getAssociatedEBooks(uid);
+        if(user==null)
+        {
             throw new EmptyException();
-      }
-      return temp;
+        }
+        List<Custom_EBook>temp=user.getCustom_eBooks();
+        return temp;
     }
 }
