@@ -75,15 +75,15 @@ public class Custom_EBookController {
     return "Success";
     }
 
-    @GetMapping("/purchase")
-    public String purchase(@RequestParam("ebookid") int ebookId) throws IOException {
+    @GetMapping("/purchase/{ebookid}")
+    public String purchase(@PathVariable("ebookid") int ebookId) throws IOException {
         Custom_EBook eBook=customEBookService.getEBookbyId(ebookId);
        return customEBookService.buildEBook(eBook);
 
     }
 
-    @GetMapping("/download")
-    public void Download(HttpServletRequest request, HttpServletResponse response,@RequestParam("ebookid") int ebookId) throws IOException {
+    @GetMapping("/download/{ebookid}")
+    public void Download(HttpServletRequest request, HttpServletResponse response,@PathVariable("ebookid") int ebookId) throws IOException {
 
         Custom_EBook eBook=customEBookService.getEBookbyId(ebookId);
         File final_file_response=new File(eBook.getLocation());

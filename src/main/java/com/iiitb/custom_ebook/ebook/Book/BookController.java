@@ -3,6 +3,7 @@ package com.iiitb.custom_ebook.ebook.Book;
 import com.iiitb.custom_ebook.ebook.Author.Author;
 import com.iiitb.custom_ebook.ebook.Book.BookComponents.BookComponents;
 import com.iiitb.custom_ebook.ebook.Exceptions.FoundException;
+import com.iiitb.custom_ebook.ebook.Exceptions.NotFoundException;
 import com.iiitb.custom_ebook.ebook.WrapperClasses.AuthorBookWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,16 @@ public class BookController {
     public List<BookComponents> getComponents(@RequestParam("book_id") int book_id)
     {
         return bookService.getBookComponentList(book_id);
+    }
+    @GetMapping("/book/{bookid}")
+    public Book getbook(@PathVariable("bookid") int bookid)
+    {
+        Book b=bookService.getBookbyId(bookid);
+        if(b==null)
+        {
+            throw new NotFoundException("Book of provided id is not present");
+        }
+        return b;
     }
 
 
