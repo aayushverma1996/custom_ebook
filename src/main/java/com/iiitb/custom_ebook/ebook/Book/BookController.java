@@ -32,8 +32,8 @@ public class BookController {
         return book.getId();
     }
 
-    @GetMapping("/book/bookComponents")
-    public List<BookComponents> getComponents(@RequestParam("book_id") int book_id)
+    @GetMapping("/book/bookComponents/{book_id}")
+    public List<BookComponents> getComponents(@PathVariable("book_id") int book_id)
     {
         return bookService.getBookComponentList(book_id);
     }

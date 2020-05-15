@@ -41,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/keywords/bookComp/{keyword}").permitAll()
                 .antMatchers("/keywords/{keyword}").permitAll()
                 .antMatchers("/bookauthor").permitAll()
-                .antMatchers("/book/bookComponents").permitAll()
+                .antMatchers("/book/bookComponents/{book_id}").permitAll()
                 .antMatchers("/file").permitAll()
                 .antMatchers("/purchase").permitAll()
                 .antMatchers("/download").permitAll()

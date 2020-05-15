@@ -71,6 +71,7 @@ public class Custom_EBookService {
         File f = new File(file_name);
 
         //to check if existing ebook component is present
+
         if (f.exists()) {
             String newFilename=MERGE_FOLDER + File.separator+uid+"_"+toc+"_"+f.getName();
             File newFile = new File(newFilename);
@@ -307,7 +308,7 @@ public class Custom_EBookService {
     {
         User user=userService.getUserbyId(uid);
 
-        //book_components merge file name
+        //book_components merge file name  toc_uid_component1id_component2id..
         String filename= Integer.toString(components.get(0).getId());
         for (int i = 1; i < components.size(); i++) {
                 filename += "_" + components.get(i).getId();
@@ -341,8 +342,8 @@ public class Custom_EBookService {
         String[] location=eBook.getLocation().split("_");
 
         List<String> component_ids=new ArrayList<String>();
-        int toc=Integer.parseInt(location[0]);
-        int uid=Integer.parseInt(location[1]);
+        int toc=Integer.parseInt(location[0]);//0or1
+        int uid=Integer.parseInt(location[1]);//user id
         for(int i=2;i<location.length;i++)
         {
            component_ids.add(location[i]);
